@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Resume Lab — Build a Resume That Gets Noticed</title>
+  <meta name="description" content="AI Resume Lab analyzes your resume, identifies skill gaps, improves your ATS score, and helps you prepare for your next job. Trusted by 50,000+ professionals."/>
+  <meta name="keywords" content="AI resume analyzer, ATS score, resume builder, job matcher, interview prep, skill gap analysis"/>
+  <meta property="og:title" content="AI Resume Lab — AI-Powered Resume Analysis Platform"/>
+  <meta property="og:description" content="Analyze your resume with AI, improve your ATS score, and land your dream job."/>
+  <meta property="og:type" content="website"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div class="bg-animated"></div>
+<div class="grid-overlay"></div>
+
+<!-- ════════════════════════ NAVBAR ════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚡</div>
+    AI RESUME LAB
+  </a>
+
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="analyzer.html">Resume Analyzer</a>
+    <a href="builder.html">Resume Builder</a>
+    <a href="matcher.html">Job Matcher</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-ghost btn-sm nav-login-btn" id="nav-login">Login</a>
+    <a href="analyzer.html" class="btn btn-primary btn-sm">Analyze My Resume</a>
+
+    <div class="nav-user nav-user-menu" style="display:none" id="nav-user-menu">
+      <div class="nav-avatar" id="nav-avatar">A</div>
+      <span class="nav-user-name" id="nav-user-name">User</span>
+      <span>▾</span>
+    </div>
+
+    <button data-theme-toggle class="btn btn-ghost btn-icon btn-sm" title="Toggle theme">☀️</button>
+  </div>
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html" class="active">🏠 Home</a>
+  <a href="analyzer.html">📄 Resume Analyzer</a>
+  <a href="builder.html">📝 Resume Builder</a>
+  <a href="matcher.html">🎯 Job Matcher</a>
+  <a href="interview.html">🎤 Interview Prep</a>
+  <a href="dashboard.html">📊 Dashboard</a>
+  <a href="login.html">🔑 Login</a>
+</div>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<section class="hero section-lg">
+  <div class="container">
+    <div class="hero-content">
+      <!-- Left Column -->
+      <div class="fade-in-up">
+        <div class="hero-eyebrow">
+          ⚡ AI-Powered Career Platform
+        </div>
+        <h1 class="hero-title">
+          Build a Resume That<br/>
+          <span class="gradient-text">Gets Noticed.</span>
+        </h1>
+        <p class="hero-subtitle">
+          AI Resume Lab analyzes your resume, identifies skill gaps, improves your ATS score,
+          and helps you prepare for your next job. Trusted by 50,000+ professionals worldwide.
+        </p>
+        <div class="hero-cta">
+          <a href="analyzer.html" class="btn btn-primary btn-xl" id="hero-analyze-btn">
+            🔍 Analyze Resume
+          </a>
+          <a href="builder.html" class="btn btn-secondary btn-xl">
+            ✨ Build Resume
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat-item">
+            <div class="hero-stat-value" data-count="50" data-suffix="K+">0</div>
+            <div class="hero-stat-label">Resumes Analyzed</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-value" data-count="94" data-suffix="%">0</div>
+            <div class="hero-stat-label">Interview Rate</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-value" data-count="4" data-suffix=".9★">0</div>
+            <div class="hero-stat-label">User Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column — Hero Dashboard Visual -->
+      <div class="hero-visual fade-in-up-delay-2" style="opacity:0">
+        <div class="hero-dashboard-card">
+          <!-- ATS Score Header -->
+          <div class="flex items-center justify-between mb-16">
+            <div>
+              <div style="font-size:0.7rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">ATS SCORE</div>
+              <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;" class="gradient-text">87<span style="font-size:1rem;font-weight:500;color:var(--text-muted)">/100</span></div>
+            </div>
+            <div style="width:64px;height:64px;border-radius:50%;background:conic-gradient(#06b6d4 0% 87%,rgba(255,255,255,0.06) 87%);display:flex;align-items:center;justify-content:center;position:relative;">
+              <div style="width:50px;height:50px;border-radius:50%;background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:0.9rem;">⚡</div>
+            </div>
+          </div>
+
+          <!-- Category Scores -->
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+            <div class="progress-wrap">
+              <div class="progress-header">
+                <span class="progress-label">Resume Structure</span>
+                <span class="progress-value">88%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill cyan" data-target="88" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-header">
+                <span class="progress-label">Keywords Match</span>
+                <span class="progress-value">85%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill purple" data-target="85" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-header">
+                <span class="progress-label">Skills Score</span>
+                <span class="progress-value">90%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill emerald" data-target="90" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-header">
+                <span class="progress-label">Job Match</span>
+                <span class="progress-value">92%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill amber" data-target="92" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Matched Skills -->
+          <div style="font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Matched Skills</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span class="skill-tag matched">✓ Python</span>
+            <span class="skill-tag matched">✓ AWS</span>
+            <span class="skill-tag matched">✓ Docker</span>
+            <span class="skill-tag missing">✗ Kubernetes</span>
+            <span class="skill-tag recommended">★ Terraform</span>
+          </div>
+        </div>
+
+        <!-- Floating Mini Cards -->
+        <div style="position:absolute;top:-20px;right:-80px;display:flex;flex-direction:column;gap:10px;">
+          <div class="mini-card">
+            <div class="mini-card-icon" style="background:rgba(6,182,212,0.15);color:var(--accent-cyan);">📊</div>
+            <div>
+              <div class="mini-card-label">ATS Score</div>
+              <div class="mini-card-value">87/100</div>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-icon" style="background:rgba(139,92,246,0.15);color:var(--accent-purple);">🎯</div>
+            <div>
+              <div class="mini-card-label">Job Match</div>
+              <div class="mini-card-value">92%</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="position:absolute;bottom:-20px;left:-70px;">
+          <div class="mini-card">
+            <div class="mini-card-icon" style="background:rgba(16,185,129,0.15);color:var(--accent-emerald);">✅</div>
+            <div>
+              <div class="mini-card-label">Skills Found</div>
+              <div class="mini-card-value">24 Skills</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FEATURES ════════════════════════ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">✨ Platform Features</div>
+      <h2 class="section-title">Everything You Need to <span class="gradient-text">Land Your Dream Job</span></h2>
+      <p class="section-subtitle">From resume analysis to interview prep — AI Resume Lab covers every step of your job search journey.</p>
+    </div>
+
+    <div class="grid-3" id="features-grid">
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-icon" style="background:rgba(6,182,212,0.15);">📊</div>
+        <h3 class="feature-title">ATS Score Analyzer</h3>
+        <p class="feature-desc">Get a detailed ATS compatibility score with insights on resume structure, keywords, formatting, and job match percentage.</p>
+        <a href="analyzer.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:0.8rem;color:var(--accent-cyan);font-weight:600;">Analyze Now →</a>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-icon" style="background:rgba(139,92,246,0.15);">🤖</div>
+        <h3 class="feature-title">AI Resume Builder</h3>
+        <p class="feature-desc">Build professional resumes with AI assistance. Generate summaries, improve bullet points, and choose from 5 premium templates.</p>
+        <a href="builder.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:0.8rem;color:var(--accent-purple);font-weight:600;">Build Resume →</a>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-icon" style="background:rgba(16,185,129,0.15);">🎯</div>
+        <h3 class="feature-title">Job Description Matcher</h3>
+        <p class="feature-desc">Paste any job description to get a detailed match score, identify missing skills, and get tailored optimization suggestions.</p>
+        <a href="matcher.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:0.8rem;color:var(--accent-emerald);font-weight:600;">Match Now →</a>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-icon" style="background:rgba(245,158,11,0.15);">🧠</div>
+        <h3 class="feature-title">Skill Gap Analyzer</h3>
+        <p class="feature-desc">Visualize the gap between your current skills and your target role. Get a personalized learning roadmap to close those gaps.</p>
+        <a href="matcher.html#skills" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:0.8rem;color:var(--accent-amber);font-weight:600;">Analyze Skills →</a>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-icon" style="background:rgba(236,72,153,0.15);">🎤</div>
+        <h3 class="feature-title">Interview Preparation</h3>
+        <p class="feature-desc">Practice with AI-generated technical, behavioral, and HR questions specific to your role. Track your mock interview scores.</p>
+        <a href="interview.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:0.8rem;color:var(--accent-pink);font-weight:600;">Start Prep →</a>
+      </div>
+
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-icon" style="background:rgba(59,130,246,0.15);">📈</div>
+        <h3 class="feature-title">Career Dashboard</h3>
+        <p class="feature-desc">Track your resume scores, job applications, interview performance, and skill improvement over time in one unified dashboard.</p>
+        <a href="dashboard.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:0.8rem;color:var(--accent-blue);font-weight:600;">View Dashboard →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ HOW IT WORKS ════════════════════════ -->
+<section class="section" style="background: var(--bg-secondary); border-top: var(--border-glass); border-bottom: var(--border-glass);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">🚀 Simple Process</div>
+      <h2 class="section-title">Get Results in <span class="gradient-text">3 Simple Steps</span></h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="text-center" data-aos="zoom-in" data-aos-delay="100">
+        <div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-btn);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.5rem;box-shadow:var(--shadow-btn);">1</div>
+        <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:10px;">Upload Your Resume</h3>
+        <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.7;">Upload your PDF, DOCX, or paste your resume text. Our AI instantly processes the content.</p>
+      </div>
+
+      <div class="text-center" data-aos="zoom-in" data-aos-delay="200">
+        <div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-btn-purple);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.5rem;box-shadow:0 4px 20px rgba(139,92,246,0.35);">2</div>
+        <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:10px;">AI Analysis</h3>
+        <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.7;">Our AI analyzes your resume across 20+ dimensions including ATS compatibility, keywords, and job match.</p>
+      </div>
+
+      <div class="text-center" data-aos="zoom-in" data-aos-delay="300">
+        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#10b981,#34d399);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.5rem;box-shadow:0 4px 20px rgba(16,185,129,0.35);">3</div>
+        <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:10px;">Improve & Apply</h3>
+        <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.7;">Get actionable recommendations, improve your resume, and track your applications through to offer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ STATS SHOWCASE ════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="grid-4">
+      <div class="card text-center" data-aos="fade-up" data-aos-delay="100">
+        <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:800;" class="gradient-text" data-count="50" data-suffix="K+">0</div>
+        <div style="font-size:0.875rem;color:var(--text-secondary);margin-top:6px;">Resumes Analyzed</div>
+      </div>
+      <div class="card text-center" data-aos="fade-up" data-aos-delay="200">
+        <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:800;" class="gradient-text" data-count="94" data-suffix="%">0</div>
+        <div style="font-size:0.875rem;color:var(--text-secondary);margin-top:6px;">Interview Rate Increase</div>
+      </div>
+      <div class="card text-center" data-aos="fade-up" data-aos-delay="300">
+        <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:800;" class="gradient-text" data-count="15" data-suffix="K+">0</div>
+        <div style="font-size:0.875rem;color:var(--text-secondary);margin-top:6px;">Jobs Landed</div>
+      </div>
+      <div class="card text-center" data-aos="fade-up" data-aos-delay="400">
+        <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:800;" class="gradient-text" data-count="200" data-suffix="+">0</div>
+        <div style="font-size:0.875rem;color:var(--text-secondary);margin-top:6px;">Partner Companies</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ TESTIMONIALS ════════════════════════ -->
+<section class="section" style="background: var(--bg-secondary); border-top: var(--border-glass); border-bottom: var(--border-glass);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">💬 Testimonials</div>
+      <h2 class="section-title">Loved by <span class="gradient-text">Professionals</span></h2>
+    </div>
+    <div class="grid-3">
+      <div class="card" data-aos="fade-up" data-aos-delay="100">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;">S</div>
+          <div>
+            <div style="font-weight:700;font-size:0.9rem;">Sarah Chen</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);">Software Engineer @ Google</div>
+          </div>
+          <div style="margin-left:auto;color:var(--accent-amber);">★★★★★</div>
+        </div>
+        <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.7;">"AI Resume Lab increased my ATS score from 62 to 91. Within 3 weeks I had interviews at Google, Amazon, and Microsoft. Incredible platform!"</p>
+      </div>
+
+      <div class="card" data-aos="fade-up" data-aos-delay="200">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--gradient-btn-purple);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;">R</div>
+          <div>
+            <div style="font-weight:700;font-size:0.9rem;">Rahul Sharma</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);">Cloud Engineer @ AWS</div>
+          </div>
+          <div style="margin-left:auto;color:var(--accent-amber);">★★★★★</div>
+        </div>
+        <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.7;">"The skill gap analyzer showed me exactly what I was missing for Cloud Engineer roles. The learning roadmap was spot-on. Got my dream job in 2 months."</p>
+      </div>
+
+      <div class="card" data-aos="fade-up" data-aos-delay="300">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#10b981,#34d399);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;">M</div>
+          <div>
+            <div style="font-weight:700;font-size:0.9rem;">Maria Rodriguez</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);">Data Scientist @ Netflix</div>
+          </div>
+          <div style="margin-left:auto;color:var(--accent-amber);">★★★★★</div>
+        </div>
+        <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.7;">"The interview prep feature is phenomenal. The AI-generated questions were almost identical to what I got asked in my actual interviews. Highly recommend!"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CTA SECTION ════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="card-lg text-center" style="background:linear-gradient(135deg,rgba(6,182,212,0.1),rgba(139,92,246,0.1));border-color:rgba(6,182,212,0.2);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,0.08) 0%,transparent 70%);pointer-events:none;"></div>
+      <div class="section-eyebrow" style="margin:0 auto 20px;">🚀 Get Started Free</div>
+      <h2 class="section-title">Ready to Land Your <span class="gradient-text">Dream Job?</span></h2>
+      <p class="section-subtitle" style="margin-bottom:32px;">Join 50,000+ professionals who've improved their resumes and landed better jobs with AI Resume Lab.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="analyzer.html" class="btn btn-primary btn-xl">🔍 Analyze My Resume Free</a>
+        <a href="register.html" class="btn btn-outline btn-xl">✨ Create Account</a>
+      </div>
+      <p style="margin-top:20px;font-size:0.8rem;color:var(--text-muted);">No credit card required · Free analysis · Instant results</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="display:inline-flex;margin-bottom:14px;">
+          <div class="logo-icon">⚡</div>
+          AI RESUME LAB
+        </a>
+        <p class="footer-desc">AI-powered resume analysis, job matching, and interview prep platform. Helping professionals land their dream jobs since 2024.</p>
+        <div class="footer-socials">
+          <a class="social-btn" href="#" title="Twitter">𝕏</a>
+          <a class="social-btn" href="#" title="LinkedIn">in</a>
+          <a class="social-btn" href="#" title="GitHub">⌥</a>
+          <a class="social-btn" href="#" title="YouTube">▶</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Product</h4>
+        <div class="footer-links">
+          <a href="analyzer.html">Resume Analyzer</a>
+          <a href="builder.html">Resume Builder</a>
+          <a href="matcher.html">Job Matcher</a>
+          <a href="interview.html">Interview Prep</a>
+          <a href="dashboard.html">Dashboard</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <div class="footer-links">
+          <a href="#">About Us</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Legal</h4>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+          <a href="#">Security</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 AI Resume Lab. All rights reserved.</div>
+      <div style="font-size:0.78rem;color:var(--text-muted);">Built with ❤️ on AWS · Powered by AI</div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Initialize page
+  document.addEventListener('DOMContentLoaded', () => {
+    ProgressBar.animateAll(800);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn instance to serve AI Resume Lab Flask Backend
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/ai-resume-lab/backend
+Environment="PATH=/home/ubuntu/ai-resume-lab/backend/venv/bin"
+ExecStart=/home/ubuntu/ai-resume-lab/backend/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 wsgi:app --timeout 120 --access-logfile /var/log/gunicorn/access.log --error-logfile /var/log/gunicorn/error.log
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

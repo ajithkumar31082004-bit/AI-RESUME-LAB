@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Matcher & Skill Gap Analyzer — AI Resume Lab</title>
+  <meta name="description" content="Match your resume to job descriptions, find missing skills, and get a personalized learning roadmap."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div class="bg-animated"></div>
+<div class="grid-overlay"></div>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div>AI RESUME LAB</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="analyzer.html">Resume Analyzer</a>
+    <a href="builder.html">Resume Builder</a>
+    <a href="matcher.html" class="active">Job Matcher</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-ghost btn-sm nav-login-btn">Login</a>
+    <a href="analyzer.html" class="btn btn-primary btn-sm">Analyze Resume</a>
+    <div class="nav-user nav-user-menu" style="display:none"><div class="nav-avatar" id="nav-avatar">A</div><span class="nav-user-name">User</span><span>▾</span></div>
+    <button data-theme-toggle class="btn btn-ghost btn-icon btn-sm">☀️</button>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">🏠 Home</a><a href="analyzer.html">📄 Resume Analyzer</a>
+  <a href="builder.html">📝 Resume Builder</a><a href="matcher.html" class="active">🎯 Job Matcher</a>
+  <a href="interview.html">🎤 Interview Prep</a><a href="dashboard.html">📊 Dashboard</a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-content">
+      <div>
+        <div class="section-eyebrow">🎯 AI-Powered</div>
+        <h1 class="page-title"><span class="gradient-text">Job Matcher & Skill Gap Analyzer</span></h1>
+        <p class="page-subtitle">Paste a job description to get a match score, missing skills, and a personalized learning roadmap.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:40px 0;">
+  <div class="container">
+    <div class="grid-2" style="gap:32px;align-items:start;" id="skills" name="skills">
+
+      <!-- LEFT: Input Panel -->
+      <div>
+        <!-- Job Description -->
+        <div class="card card-lg" style="margin-bottom:24px;">
+          <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:16px;">📋 Job Description</h2>
+          <div class="form-group">
+            <label class="form-label" for="job-desc-match">Paste Job Description</label>
+            <textarea class="form-input form-textarea" id="job-desc-match" rows="10"
+              placeholder="Paste the full job description here...&#10;&#10;Example:&#10;We are looking for a Cloud Engineer with experience in AWS, Kubernetes, Docker, Terraform..."></textarea>
+          </div>
+          <div class="form-group mt-16" style="margin-top:16px;">
+            <label class="form-label" for="job-title-input">Job Title (optional)</label>
+            <input type="text" class="form-input" id="job-title-input" placeholder="e.g. Cloud Engineer, DevOps Engineer"/>
+          </div>
+        </div>
+
+        <!-- Your Skills -->
+        <div class="card card-lg" style="margin-bottom:24px;">
+          <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:16px;">🧠 Your Current Skills</h2>
+          <div class="form-group">
+            <label class="form-label" for="current-skills">Skills (comma separated)</label>
+            <textarea class="form-input form-textarea" id="current-skills" rows="4"
+              placeholder="Python, AWS, Docker, SQL, Git, Linux, REST APIs, Agile..."></textarea>
+            <div class="form-hint">List all your technical and soft skills.</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;" id="skills-preview"></div>
+        </div>
+
+        <!-- Target Role -->
+        <div class="card card-lg" style="margin-bottom:24px;">
+          <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:16px;">🎯 Target Role</h2>
+          <div class="form-group">
+            <label class="form-label" for="target-role">Select Target Role</label>
+            <select class="form-input form-select" id="target-role">
+              <option value="">-- Select a role --</option>
+              <option value="cloud_engineer">Cloud Engineer</option>
+              <option value="devops_engineer">DevOps Engineer</option>
+              <option value="backend_developer">Backend Developer</option>
+              <option value="frontend_developer">Frontend Developer</option>
+              <option value="fullstack_developer">Full Stack Developer</option>
+              <option value="data_scientist">Data Scientist</option>
+              <option value="ml_engineer">ML Engineer</option>
+              <option value="sre">Site Reliability Engineer (SRE)</option>
+              <option value="security_engineer">Security Engineer</option>
+              <option value="product_manager">Product Manager</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-primary w-full btn-lg" id="match-btn" onclick="runMatching()">
+          🎯 Analyze Job Match & Skills
+        </button>
+        <button class="btn btn-ghost w-full btn-sm" style="margin-top:10px;" onclick="loadDemoMatch()">
+          ✨ Try with Demo Data
+        </button>
+      </div>
+
+      <!-- RIGHT: Results -->
+      <div id="match-results">
+        <!-- Placeholder -->
+        <div id="match-placeholder" class="card card-lg text-center" style="padding:60px 24px;">
+          <div style="font-size:4rem;margin-bottom:20px;opacity:0.3;">🎯</div>
+          <h3 style="font-size:1.1rem;font-weight:600;color:var(--text-secondary);margin-bottom:10px;">Match Results Will Appear Here</h3>
+          <p style="font-size:0.875rem;color:var(--text-muted);">Paste a job description and click "Analyze Job Match" to see your match score and skill gap analysis.</p>
+        </div>
+
+        <!-- Results -->
+        <div id="match-content" class="hidden">
+
+          <!-- Match Score -->
+          <div class="card card-lg" style="margin-bottom:20px;text-align:center;">
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">JOB MATCH SCORE</div>
+            <div style="font-family:var(--font-display);font-size:5rem;font-weight:900;line-height:1;" class="gradient-text" id="match-score-display">0</div>
+            <div style="font-size:1rem;color:var(--text-muted);margin-bottom:20px;">%</div>
+            <div id="match-verdict" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--radius-full);font-size:0.85rem;font-weight:600;"></div>
+          </div>
+
+          <!-- Matched Skills -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="result-section-title">
+              <span style="color:var(--accent-emerald);">✅</span> Matching Skills
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;" id="matching-skills-display"></div>
+          </div>
+
+          <!-- Missing Skills -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="result-section-title">
+              <span style="color:var(--accent-red);">❌</span> Missing Skills
+            </div>
+            <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:12px;">Skills required by the job that are not on your resume:</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;" id="missing-skills-display"></div>
+          </div>
+
+          <!-- Recommended Skills -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="result-section-title">
+              <span style="color:var(--accent-amber);">⭐</span> Recommended Skills to Learn
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;" id="recommended-skills-display"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEARNING ROADMAP (full width) -->
+    <div id="roadmap-section" class="hidden" style="margin-top:40px;">
+      <div class="card card-lg">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin-bottom:4px;">🗺️ Personalized Learning Roadmap</h2>
+            <p style="font-size:0.85rem;color:var(--text-secondary);">Your step-by-step path to becoming a <span id="roadmap-role-name" class="gradient-text">Cloud Engineer</span></p>
+          </div>
+          <span class="badge badge-cyan">AI Generated</span>
+        </div>
+
+        <!-- Roadmap Visual -->
+        <div style="overflow-x:auto;padding:10px 0;">
+          <div style="display:flex;align-items:flex-start;gap:0;min-width:max-content;" id="roadmap-visual"></div>
+        </div>
+
+        <!-- Steps Detail -->
+        <div style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;" id="roadmap-steps"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer"><div class="container"><div class="footer-bottom"><div class="footer-copy">© 2024 AI Resume Lab</div><a href="index.html" style="font-size:0.8rem;color:var(--text-muted);">← Back to Home</a></div></div></footer>
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/matcher.js"></script>
+</body>
+</html>

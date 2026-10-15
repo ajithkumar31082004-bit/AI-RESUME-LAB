@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interview Preparation — AI Resume Lab</title>
+  <meta name="description" content="Practice technical, behavioral, and HR interview questions with AI. Start a mock interview session."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div class="bg-animated"></div>
+<div class="grid-overlay"></div>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo"><div class="logo-icon">⚡</div>AI RESUME LAB</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a><a href="analyzer.html">Resume Analyzer</a>
+    <a href="builder.html">Resume Builder</a><a href="matcher.html">Job Matcher</a>
+    <a href="interview.html" class="active">Interview Prep</a><a href="dashboard.html">Dashboard</a>
+  </div>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-ghost btn-sm nav-login-btn">Login</a>
+    <a href="analyzer.html" class="btn btn-primary btn-sm">Analyze Resume</a>
+    <div class="nav-user nav-user-menu" style="display:none"><div class="nav-avatar" id="nav-avatar">A</div><span class="nav-user-name">User</span><span>▾</span></div>
+    <button data-theme-toggle class="btn btn-ghost btn-icon btn-sm">☀️</button>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">🏠 Home</a><a href="analyzer.html">📄 Resume Analyzer</a>
+  <a href="builder.html">📝 Resume Builder</a><a href="matcher.html">🎯 Job Matcher</a>
+  <a href="interview.html" class="active">🎤 Interview Prep</a><a href="dashboard.html">📊 Dashboard</a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-content">
+      <div>
+        <div class="section-eyebrow">🎤 AI-Powered</div>
+        <h1 class="page-title"><span class="gradient-text">Interview Preparation</span></h1>
+        <p class="page-subtitle">Generate role-specific questions and start a mock interview session.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:40px 0;">
+  <div class="container">
+    <div class="grid-2" style="gap:32px;align-items:start;">
+
+      <!-- Config Panel -->
+      <div>
+        <div class="card card-lg" style="margin-bottom:20px;">
+          <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:20px;">🎯 Interview Setup</h2>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="form-group">
+              <label class="form-label" for="int-role">Job Role</label>
+              <select class="form-input form-select" id="int-role">
+                <option value="Cloud Engineer">Cloud Engineer</option>
+                <option value="DevOps Engineer">DevOps Engineer</option>
+                <option value="Backend Developer">Backend Developer</option>
+                <option value="Frontend Developer">Frontend Developer</option>
+                <option value="Full Stack Developer">Full Stack Developer</option>
+                <option value="Data Scientist">Data Scientist</option>
+                <option value="ML Engineer">ML Engineer</option>
+                <option value="SRE">Site Reliability Engineer</option>
+                <option value="Product Manager">Product Manager</option>
+                <option value="Security Engineer">Security Engineer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="int-level">Experience Level</label>
+              <select class="form-input form-select" id="int-level">
+                <option value="entry">Entry Level (0–2 years)</option>
+                <option value="mid" selected>Mid Level (2–5 years)</option>
+                <option value="senior">Senior Level (5+ years)</option>
+                <option value="lead">Lead/Principal</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="int-tech">Primary Technology</label>
+              <input type="text" class="form-input" id="int-tech" placeholder="e.g. AWS, Python, Kubernetes" value="AWS, Python"/>
+            </div>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+              <label style="font-size:0.82rem;font-weight:600;color:var(--text-secondary);width:100%;">Question Types</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-secondary);cursor:pointer;">
+                <input type="checkbox" id="qt-technical" checked style="accent-color:var(--accent-cyan);"/> Technical
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-secondary);cursor:pointer;">
+                <input type="checkbox" id="qt-behavioral" checked style="accent-color:var(--accent-cyan);"/> Behavioral
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-secondary);cursor:pointer;">
+                <input type="checkbox" id="qt-scenario" checked style="accent-color:var(--accent-cyan);"/> Scenario
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-secondary);cursor:pointer;">
+                <input type="checkbox" id="qt-hr" checked style="accent-color:var(--accent-cyan);"/> HR
+              </label>
+            </div>
+
+            <button class="btn btn-primary w-full btn-lg" id="gen-questions-btn" onclick="generateQuestions()">
+              🤖 Generate Questions
+            </button>
+            <button class="btn btn-purple w-full" id="mock-interview-btn" onclick="startMockInterview()">
+              🎤 Start Mock Interview
+            </button>
+          </div>
+        </div>
+
+        <!-- Tips Card -->
+        <div class="card" style="padding:20px;">
+          <div style="font-weight:700;font-size:0.9rem;margin-bottom:12px;">💡 Interview Tips</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="result-item">
+              <span class="dot" style="background:var(--accent-cyan);"></span>
+              Use the STAR method: Situation, Task, Action, Result
+            </div>
+            <div class="result-item">
+              <span class="dot" style="background:var(--accent-purple);"></span>
+              Research the company before your interview
+            </div>
+            <div class="result-item">
+              <span class="dot" style="background:var(--accent-emerald);"></span>
+              Quantify achievements with numbers and percentages
+            </div>
+            <div class="result-item">
+              <span class="dot" style="background:var(--accent-amber);"></span>
+              Prepare 3–5 thoughtful questions to ask the interviewer
+            </div>
+            <div class="result-item">
+              <span class="dot" style="background:var(--accent-pink);"></span>
+              Practice out loud, not just in your head
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Questions Panel -->
+      <div id="questions-panel">
+        <!-- Default State -->
+        <div id="questions-placeholder" class="card card-lg text-center" style="padding:60px 24px;">
+          <div style="font-size:4rem;margin-bottom:20px;opacity:0.3;">🎤</div>
+          <h3 style="font-size:1.1rem;font-weight:600;color:var(--text-secondary);margin-bottom:10px;">Interview Questions Will Appear Here</h3>
+          <p style="font-size:0.875rem;color:var(--text-muted);">Select your role and experience level, then click "Generate Questions" to get personalized interview questions.</p>
+        </div>
+
+        <!-- Questions Content -->
+        <div id="questions-content" class="hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+            <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;">
+              Questions for <span id="questions-role-label" class="gradient-text">Cloud Engineer</span>
+            </h2>
+            <button class="btn btn-ghost btn-sm" onclick="generateQuestions()">↻ Regenerate</button>
+          </div>
+
+          <div class="tabs" data-tabs id="question-tabs">
+            <button class="tab-btn" id="tab-tech">⚙️ Technical</button>
+            <button class="tab-btn" id="tab-beh">🤝 Behavioral</button>
+            <button class="tab-btn" id="tab-scen">🎭 Scenario</button>
+            <button class="tab-btn" id="tab-hr">💼 HR</button>
+          </div>
+
+          <div style="margin-top:16px;">
+            <div class="tab-content" id="tc-technical"></div>
+            <div class="tab-content" id="tc-behavioral"></div>
+            <div class="tab-content" id="tc-scenario"></div>
+            <div class="tab-content" id="tc-hr"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOCK INTERVIEW MODAL -->
+<div class="modal-overlay" id="mock-interview-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 class="modal-title">🎤 Mock Interview Session</h2>
+      <button class="modal-close" aria-label="Close">✕</button>
+    </div>
+
+    <div id="mock-intro" style="">
+      <div style="text-align:center;padding:20px 0;">
+        <div style="font-size:3rem;margin-bottom:16px;">🎤</div>
+        <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin-bottom:8px;">Ready to Practice?</h3>
+        <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">
+          You'll be asked <strong id="mock-question-count">10</strong> questions one at a time. Type your answers and get AI feedback.
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-lg" onclick="startSession()">▶ Start Session</button>
+          <button class="btn btn-ghost" onclick="Modal.close('mock-interview-modal')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mock-session" class="hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div>
+          <span class="badge badge-cyan" id="mock-category-badge">Technical</span>
+          <span style="font-size:0.78rem;color:var(--text-muted);margin-left:8px;" id="mock-progress">Question 1 of 10</span>
+        </div>
+        <div id="mock-timer" style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--accent-amber);">02:00</div>
+      </div>
+
+      <div id="mock-question" style="font-size:1.05rem;font-weight:600;color:var(--text-primary);line-height:1.5;margin-bottom:20px;padding:16px;background:var(--bg-glass);border-radius:var(--radius-md);border:var(--border-glass);">
+        Loading question...
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="mock-answer">Your Answer</label>
+        <textarea class="form-input form-textarea" id="mock-answer" rows="6" placeholder="Type your answer here... Be specific and use the STAR method for behavioral questions."></textarea>
+      </div>
+
+      <div id="mock-feedback" class="hidden" style="margin-top:16px;padding:16px;border-radius:var(--radius-md);border:1px solid;"></div>
+
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="btn btn-primary" id="submit-answer-btn" onclick="submitMockAnswer()">Submit Answer</button>
+        <button class="btn btn-ghost" onclick="skipQuestion()">Skip →</button>
+      </div>
+    </div>
+
+    <div id="mock-complete" class="hidden" style="text-align:center;padding:20px 0;">
+      <div style="font-size:3rem;margin-bottom:16px;">🏆</div>
+      <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:8px;">Interview Complete!</h3>
+      <div style="font-family:var(--font-display);font-size:3rem;font-weight:800;" class="gradient-text" id="mock-final-score">78%</div>
+      <p style="color:var(--text-secondary);margin-bottom:24px;">Good performance! Focus on quantifying your achievements more.</p>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button class="btn btn-primary" onclick="startSession()">Try Again</button>
+        <button class="btn btn-ghost" onclick="Modal.close('mock-interview-modal')">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer"><div class="container"><div class="footer-bottom"><div class="footer-copy">© 2024 AI Resume Lab</div><a href="index.html" style="font-size:0.8rem;color:var(--text-muted);">← Back to Home</a></div></div></footer>
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/interview.js"></script>
+</body>
+</html>

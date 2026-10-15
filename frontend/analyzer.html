@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume Analyzer — AI Resume Lab</title>
+  <meta name="description" content="Upload your resume and get an instant AI-powered ATS score, skill analysis, job match, and actionable recommendations."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div class="bg-animated"></div>
+<div class="grid-overlay"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚡</div>AI RESUME LAB
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="analyzer.html" class="active">Resume Analyzer</a>
+    <a href="builder.html">Resume Builder</a>
+    <a href="matcher.html">Job Matcher</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-ghost btn-sm nav-login-btn">Login</a>
+    <a href="analyzer.html" class="btn btn-primary btn-sm">Analyze My Resume</a>
+    <div class="nav-user nav-user-menu" style="display:none">
+      <div class="nav-avatar" id="nav-avatar">A</div>
+      <span class="nav-user-name">User</span><span>▾</span>
+    </div>
+    <button data-theme-toggle class="btn btn-ghost btn-icon btn-sm">☀️</button>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">🏠 Home</a>
+  <a href="analyzer.html" class="active">📄 Resume Analyzer</a>
+  <a href="builder.html">📝 Resume Builder</a>
+  <a href="matcher.html">🎯 Job Matcher</a>
+  <a href="interview.html">🎤 Interview Prep</a>
+  <a href="dashboard.html">📊 Dashboard</a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-content">
+      <div>
+        <div class="section-eyebrow">📄 AI-Powered</div>
+        <h1 class="page-title"><span class="gradient-text">Resume Analyzer</span></h1>
+        <p class="page-subtitle">Upload your resume and get instant AI analysis, ATS score, and recommendations.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-shrink:0;">
+        <span class="badge badge-cyan">✓ Supports PDF, DOCX, TXT</span>
+        <span class="badge badge-emerald">✓ Free Analysis</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div style="padding: 40px 0; min-height: 60vh;">
+  <div class="container">
+    <div class="grid-2" style="gap:32px;align-items:start;">
+
+      <!-- LEFT: Upload Panel -->
+      <div>
+        <div class="card card-lg" id="upload-panel">
+          <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin-bottom:24px;">Upload Your Resume</h2>
+
+          <!-- Tabs -->
+          <div class="tabs mb-24" data-tabs>
+            <button class="tab-btn" id="tab-upload">📁 Upload File</button>
+            <button class="tab-btn" id="tab-paste">📋 Paste Text</button>
+          </div>
+
+          <!-- Upload File Tab -->
+          <div class="tab-content" id="tc-upload">
+            <div class="upload-zone" id="resume-upload-zone">
+              <input type="file" id="resume-file" accept=".pdf,.doc,.docx,.txt" aria-label="Upload resume file"/>
+              <span class="upload-icon">📄</span>
+              <div class="upload-title">Drop your resume here</div>
+              <div class="upload-subtitle">or click to browse files</div>
+              <div class="upload-formats">
+                <span class="badge badge-cyan">PDF</span>
+                <span class="badge badge-blue">DOCX</span>
+                <span class="badge badge-purple">TXT</span>
+              </div>
+            </div>
+            <div id="file-preview" class="hidden" style="margin-top:16px;padding:14px;background:var(--bg-glass);border-radius:var(--radius-md);border:var(--border-glass);display:flex;align-items:center;gap:12px;">
+              <span style="font-size:1.5rem;">📄</span>
+              <div style="flex:1;">
+                <div id="file-name" style="font-size:0.875rem;font-weight:600;color:var(--text-primary);"></div>
+                <div id="file-size" style="font-size:0.78rem;color:var(--text-muted);"></div>
+              </div>
+              <button id="remove-file" class="btn btn-ghost btn-sm">✕ Remove</button>
+            </div>
+          </div>
+
+          <!-- Paste Text Tab -->
+          <div class="tab-content" id="tc-paste">
+            <div class="form-group">
+              <label class="form-label" for="resume-text-input">Paste Resume Text</label>
+              <textarea class="form-input form-textarea" id="resume-text-input" rows="12"
+                placeholder="Paste your full resume text here...&#10;&#10;Include: Summary, Experience, Education, Skills, Projects, Certifications..."></textarea>
+              <div class="form-hint">Minimum 100 characters for accurate analysis.</div>
+            </div>
+          </div>
+
+          <!-- Job Description (optional) -->
+          <div style="margin-top:24px;" class="divider" style="margin:20px 0;"></div>
+          <div class="form-group mt-24">
+            <label class="form-label" for="job-desc-input">
+              Job Description <span style="color:var(--text-muted);font-weight:400;">(Optional — for job match analysis)</span>
+            </label>
+            <textarea class="form-input form-textarea" id="job-desc-input" rows="6"
+              placeholder="Paste the job description here to get a match score and missing skills analysis..."></textarea>
+          </div>
+
+          <!-- Analyze Button -->
+          <button class="btn btn-primary w-full btn-lg mt-24" id="analyze-btn" style="margin-top:24px;">
+            🔍 Analyze Resume
+          </button>
+
+          <!-- Demo Button -->
+          <button class="btn btn-ghost w-full btn-sm" id="demo-btn" style="margin-top:10px;font-size:0.8rem;">
+            ✨ Try with Demo Data
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT: Results Panel -->
+      <div id="results-panel">
+
+        <!-- Placeholder (before analysis) -->
+        <div id="results-placeholder" class="card card-lg text-center" style="padding:60px 24px;">
+          <div style="font-size:4rem;margin-bottom:20px;opacity:0.3;">📊</div>
+          <h3 style="font-size:1.1rem;font-weight:600;color:var(--text-secondary);margin-bottom:10px;">Analysis Results Will Appear Here</h3>
+          <p style="font-size:0.875rem;color:var(--text-muted);">Upload your resume or paste text and click "Analyze Resume" to see your ATS score, strengths, weaknesses, and AI recommendations.</p>
+        </div>
+
+        <!-- Loading State -->
+        <div id="results-loading" class="hidden card card-lg text-center" style="padding:60px 24px;">
+          <div class="loader" style="margin:0 auto 20px;"></div>
+          <h3 style="font-size:1.1rem;font-weight:600;color:var(--text-primary);margin-bottom:8px;">Analyzing Your Resume...</h3>
+          <p style="font-size:0.85rem;color:var(--text-secondary);" id="loading-status">Extracting text and parsing sections...</p>
+          <div class="loader-dots" style="justify-content:center;margin-top:16px;">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <!-- Results (populated by JS) -->
+        <div id="results-content" class="hidden">
+
+          <!-- ATS Score Card -->
+          <div class="card card-lg mb-24" id="ats-score-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+              <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;">ATS Score Analysis</h2>
+              <div style="display:flex;gap:8px;">
+                <span class="badge badge-cyan">AI Analysis</span>
+                <button class="btn btn-ghost btn-sm" id="download-report-btn" onclick="downloadReport()">⬇ Report</button>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;margin-bottom:28px;">
+              <!-- Big Score -->
+              <div style="text-align:center;flex-shrink:0;">
+                <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">ATS SCORE</div>
+                <div style="font-family:var(--font-display);font-size:4rem;font-weight:800;line-height:1;" class="gradient-text" id="display-ats-score">0</div>
+                <div style="font-size:0.875rem;color:var(--text-muted);">/100</div>
+              </div>
+
+              <!-- Job Match Score -->
+              <div style="text-align:center;flex-shrink:0;" id="job-match-wrap">
+                <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">JOB MATCH</div>
+                <div style="font-family:var(--font-display);font-size:4rem;font-weight:800;line-height:1;color:var(--accent-emerald);" id="display-job-match">0</div>
+                <div style="font-size:0.875rem;color:var(--text-muted);">%</div>
+              </div>
+
+              <!-- Category progress bars -->
+              <div style="flex:1;min-width:200px;" id="score-categories"></div>
+            </div>
+
+            <!-- Skill Tags Row -->
+            <div style="margin-bottom:8px;font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;">Skill Match</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;" id="skill-tags-row"></div>
+          </div>
+
+          <!-- Analysis Tabs -->
+          <div class="card card-lg" id="analysis-tabs-card">
+            <div class="tabs mb-24" data-tabs id="analysis-tabs-container">
+              <button class="tab-btn">💪 Strengths</button>
+              <button class="tab-btn">⚠️ Improve</button>
+              <button class="tab-btn">🤖 AI Recs</button>
+              <button class="tab-btn">❌ Missing</button>
+            </div>
+
+            <!-- Strengths -->
+            <div class="tab-content" id="tab-strengths">
+              <div class="result-section-title">
+                <span class="icon" style="color:var(--accent-emerald);">✅</span>
+                Resume Strengths
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;" id="strengths-list"></div>
+            </div>
+
+            <!-- Areas to Improve -->
+            <div class="tab-content" id="tab-weaknesses">
+              <div class="result-section-title">
+                <span class="icon" style="color:var(--accent-amber);">⚠️</span>
+                Areas to Improve
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;" id="weaknesses-list"></div>
+            </div>
+
+            <!-- AI Recommendations -->
+            <div class="tab-content" id="tab-recommendations">
+              <div class="result-section-title">
+                <span class="icon" style="color:var(--accent-cyan);">🤖</span>
+                AI Recommendations
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px;" id="recommendations-list"></div>
+            </div>
+
+            <!-- Missing Skills -->
+            <div class="tab-content" id="tab-missing">
+              <div class="result-section-title">
+                <span class="icon" style="color:var(--accent-red);">❌</span>
+                Missing Skills
+              </div>
+              <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px;">Skills mentioned in the job description that are not found in your resume:</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;" id="missing-skills-list"></div>
+              <div style="margin-top:20px;">
+                <a href="matcher.html" class="btn btn-outline btn-sm">View Learning Path →</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 AI Resume Lab. All rights reserved.</div>
+      <a href="index.html" style="font-size:0.8rem;color:var(--text-muted);">← Back to Home</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/analyzer.js"></script>
+</body>
+</html>

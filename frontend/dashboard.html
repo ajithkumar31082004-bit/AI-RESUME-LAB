@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — AI Resume Lab</title>
+  <meta name="description" content="Your AI Resume Lab dashboard — track resume scores, applications, interview performance, and skill growth."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div class="bg-animated"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚡</div>AI RESUME LAB
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="analyzer.html">Resume Analyzer</a>
+    <a href="builder.html">Resume Builder</a>
+    <a href="matcher.html">Job Matcher</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="dashboard.html" class="active">Dashboard</a>
+  </div>
+  <div class="nav-actions">
+    <div class="nav-user nav-user-menu" style="display:flex;">
+      <div class="nav-avatar" id="nav-avatar">A</div>
+      <span class="nav-user-name" id="nav-user-name">Alex</span><span>▾</span>
+    </div>
+    <button data-action="logout" class="btn btn-ghost btn-sm">Logout</button>
+    <button data-theme-toggle class="btn btn-ghost btn-icon btn-sm">☀️</button>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">🏠 Home</a>
+  <a href="analyzer.html">📄 Resume Analyzer</a>
+  <a href="builder.html">📝 Resume Builder</a>
+  <a href="matcher.html">🎯 Job Matcher</a>
+  <a href="interview.html">🎤 Interview Prep</a>
+  <a href="dashboard.html" class="active">📊 Dashboard</a>
+</div>
+
+<!-- DASHBOARD LAYOUT -->
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-label">Overview</div>
+    <a href="dashboard.html" class="sidebar-item active">
+      <span class="icon">📊</span> Dashboard
+    </a>
+    <a href="analyzer.html" class="sidebar-item">
+      <span class="icon">📄</span> Resume Analyzer
+    </a>
+    <a href="builder.html" class="sidebar-item">
+      <span class="icon">✏️</span> Resume Builder
+    </a>
+
+    <div class="sidebar-label">Career Tools</div>
+    <a href="matcher.html" class="sidebar-item">
+      <span class="icon">🎯</span> Job Matcher
+    </a>
+    <a href="matcher.html#skills" class="sidebar-item">
+      <span class="icon">🧠</span> Skill Gap Analyzer
+    </a>
+    <a href="interview.html" class="sidebar-item">
+      <span class="icon">🎤</span> Interview Prep
+    </a>
+
+    <div class="sidebar-label">My Data</div>
+    <a href="#" class="sidebar-item" id="sidebar-applications">
+      <span class="icon">💼</span> Applications
+    </a>
+    <a href="#" class="sidebar-item">
+      <span class="icon">📋</span> My Resumes
+    </a>
+    <a href="#" class="sidebar-item">
+      <span class="icon">📈</span> Progress
+    </a>
+
+    <div class="sidebar-label">Account</div>
+    <a href="#" class="sidebar-item">
+      <span class="icon">⚙️</span> Settings
+    </a>
+    <a href="#" class="sidebar-item" data-action="logout">
+      <span class="icon">🚪</span> Logout
+    </a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main" id="main-content">
+
+    <!-- Header -->
+    <div class="dash-header">
+      <div>
+        <div class="dash-greeting">Good evening, <span id="user-greeting-name" class="gradient-text">Alex</span> 👋</div>
+        <div class="dash-date" id="current-date"></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="analyzer.html" class="btn btn-primary btn-sm">+ Analyze Resume</a>
+        <button class="btn btn-ghost btn-sm" onclick="loadDashboard()">↻ Refresh</button>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon cyan">📊</div>
+        <div>
+          <div class="stat-value" id="stat-ats">87</div>
+          <div class="stat-label">ATS Score</div>
+          <div class="stat-change positive">↑ +5 this week</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon emerald">🎯</div>
+        <div>
+          <div class="stat-value" id="stat-match">92%</div>
+          <div class="stat-label">Job Match</div>
+          <div class="stat-change positive">↑ +3% this week</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple">🧠</div>
+        <div>
+          <div class="stat-value" id="stat-skills">24</div>
+          <div class="stat-label">Skills Tracked</div>
+          <div class="stat-change positive">↑ +2 this month</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">💼</div>
+        <div>
+          <div class="stat-value" id="stat-apps">12</div>
+          <div class="stat-label">Applications</div>
+          <div class="stat-change positive">↑ 4 active</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon amber">🎤</div>
+        <div>
+          <div class="stat-value" id="stat-interviews">4</div>
+          <div class="stat-label">Interviews</div>
+          <div class="stat-change positive">↑ 1 scheduled</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon pink">❤️</div>
+        <div>
+          <div class="stat-value" id="stat-health">87</div>
+          <div class="stat-label">Resume Health</div>
+          <div class="stat-change positive">↑ Excellent</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-grid" style="margin-bottom:24px;">
+      <!-- Score History Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Resume Score History</div>
+            <div class="chart-subtitle">Last 7 analyses</div>
+          </div>
+          <span class="badge badge-emerald">↑ Improving</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="score-history-chart" style="width:100%;height:220px;"></canvas>
+        </div>
+      </div>
+
+      <!-- Skill Distribution -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Skill Distribution</div>
+            <div class="chart-subtitle">By category</div>
+          </div>
+        </div>
+        <div class="donut-wrap">
+          <div class="donut-canvas-wrap">
+            <canvas id="skills-donut-chart" width="160" height="160"></canvas>
+          </div>
+          <div class="donut-legend">
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot"><div class="dot-color" style="background:#06b6d4;"></div> Technical</div>
+              <div class="donut-legend-val">12</div>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot"><div class="dot-color" style="background:#8b5cf6;"></div> Cloud/DevOps</div>
+              <div class="donut-legend-val">7</div>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot"><div class="dot-color" style="background:#10b981;"></div> Soft Skills</div>
+              <div class="donut-legend-val">5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resume Health + Applications -->
+    <div class="section-cards-row">
+
+      <!-- Resume Health -->
+      <div class="health-card">
+        <div class="health-header">
+          <div style="font-family:var(--font-display);font-size:1rem;font-weight:700;">Resume Health</div>
+          <a href="analyzer.html" class="btn btn-outline btn-sm">Improve →</a>
+        </div>
+        <div class="health-score-wrap">
+          <div id="health-score-circle"></div>
+          <div class="health-categories" id="health-categories">
+            <div class="progress-wrap">
+              <div class="progress-header">
+                <span class="progress-label">Structure</span>
+                <span class="progress-value">88%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill cyan" data-target="88" style="width:0%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-header">
+                <span class="progress-label">Keywords</span>
+                <span class="progress-value">85%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill purple" data-target="85" style="width:0%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-header">
+                <span class="progress-label">Skills</span>
+                <span class="progress-value">90%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill emerald" data-target="90" style="width:0%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-header">
+                <span class="progress-label">Experience</span>
+                <span class="progress-value">82%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill amber" data-target="82" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Quick Actions</div>
+        </div>
+        <div class="quick-actions">
+          <a href="analyzer.html" class="quick-action-card">
+            <div class="qa-icon" style="background:rgba(6,182,212,0.15);">📊</div>
+            <div class="qa-label">Analyze Resume</div>
+          </a>
+          <a href="builder.html" class="quick-action-card">
+            <div class="qa-icon" style="background:rgba(139,92,246,0.15);">✏️</div>
+            <div class="qa-label">Build Resume</div>
+          </a>
+          <a href="matcher.html" class="quick-action-card">
+            <div class="qa-icon" style="background:rgba(16,185,129,0.15);">🎯</div>
+            <div class="qa-label">Match Jobs</div>
+          </a>
+          <a href="interview.html" class="quick-action-card">
+            <div class="qa-icon" style="background:rgba(245,158,11,0.15);">🎤</div>
+            <div class="qa-label">Practice Interview</div>
+          </a>
+          <a href="matcher.html#skills" class="quick-action-card">
+            <div class="qa-icon" style="background:rgba(236,72,153,0.15);">🧠</div>
+            <div class="qa-label">Skill Gap</div>
+          </a>
+          <a href="#" class="quick-action-card" onclick="Toast.info('Coming Soon', 'LinkedIn optimizer coming in v2.')">
+            <div class="qa-icon" style="background:rgba(59,130,246,0.15);">💼</div>
+            <div class="qa-label">LinkedIn Opt.</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Applications Tracker -->
+    <div class="chart-card section-card-full">
+      <div class="chart-header" style="margin-bottom:16px;">
+        <div>
+          <div class="chart-title">Application Tracker</div>
+          <div class="chart-subtitle">Your recent job applications</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="Modal.open('add-application-modal')">+ Add Application</button>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="tracker-table" id="applications-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Applied</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="applications-tbody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Activity Feed + My Resumes -->
+    <div class="charts-grid" style="margin-top:24px;">
+      <!-- Recent Activity -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Recent Activity</div>
+        </div>
+        <div class="activity-feed" id="activity-feed">
+          <div class="activity-item">
+            <div class="activity-icon-wrap" style="background:rgba(6,182,212,0.15);">📊</div>
+            <div class="activity-content">
+              <div class="activity-title">Resume Analyzed</div>
+              <div class="activity-desc">ATS Score: 87/100 · Cloud Engineer role</div>
+            </div>
+            <div class="activity-time">2h ago</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon-wrap" style="background:rgba(16,185,129,0.15);">🎯</div>
+            <div class="activity-content">
+              <div class="activity-title">Job Match Completed</div>
+              <div class="activity-desc">92% match with Google Cloud Engineer</div>
+            </div>
+            <div class="activity-time">5h ago</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon-wrap" style="background:rgba(139,92,246,0.15);">🎤</div>
+            <div class="activity-content">
+              <div class="activity-title">Mock Interview</div>
+              <div class="activity-desc">Technical interview practice · Score: 78%</div>
+            </div>
+            <div class="activity-time">Yesterday</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon-wrap" style="background:rgba(245,158,11,0.15);">✏️</div>
+            <div class="activity-content">
+              <div class="activity-title">Resume Updated</div>
+              <div class="activity-desc">Added Terraform and Kubernetes skills</div>
+            </div>
+            <div class="activity-time">2 days ago</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon-wrap" style="background:rgba(236,72,153,0.15);">💼</div>
+            <div class="activity-content">
+              <div class="activity-title">Application Submitted</div>
+              <div class="activity-desc">Applied to Cloud Engineer @ Google</div>
+            </div>
+            <div class="activity-time">3 days ago</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Resumes -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">My Resumes</div>
+        </div>
+        <div class="resume-list">
+          <div class="resume-list-item">
+            <div class="resume-file-icon">📄</div>
+            <div class="resume-meta">
+              <div class="resume-name">Cloud_Engineer_Resume_v3.pdf</div>
+              <div class="resume-info">Last analyzed · 2.4 MB</div>
+            </div>
+            <div class="resume-score-badge">
+              <div class="resume-score-val">87</div>
+              <div class="resume-score-lbl">ATS</div>
+            </div>
+            <div class="resume-actions">
+              <a href="analyzer.html" class="btn btn-outline btn-sm">Analyze</a>
+            </div>
+          </div>
+          <div class="resume-list-item">
+            <div class="resume-file-icon">📄</div>
+            <div class="resume-meta">
+              <div class="resume-name">Backend_Dev_Resume_v2.docx</div>
+              <div class="resume-info">3 days ago · 1.8 MB</div>
+            </div>
+            <div class="resume-score-badge">
+              <div class="resume-score-val">79</div>
+              <div class="resume-score-lbl">ATS</div>
+            </div>
+            <div class="resume-actions">
+              <a href="analyzer.html" class="btn btn-outline btn-sm">Analyze</a>
+            </div>
+          </div>
+          <div class="resume-list-item">
+            <div class="resume-file-icon">📄</div>
+            <div class="resume-meta">
+              <div class="resume-name">General_Resume_v1.pdf</div>
+              <div class="resume-info">1 week ago · 1.2 MB</div>
+            </div>
+            <div class="resume-score-badge">
+              <div class="resume-score-val">65</div>
+              <div class="resume-score-lbl">ATS</div>
+            </div>
+            <div class="resume-actions">
+              <a href="analyzer.html" class="btn btn-outline btn-sm">Analyze</a>
+            </div>
+          </div>
+        </div>
+        <a href="analyzer.html" class="btn btn-ghost w-full btn-sm" style="margin-top:12px;">+ Upload New Resume</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Add Application Modal -->
+<div class="modal-overlay" id="add-application-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Add Job Application</h2>
+      <button class="modal-close" aria-label="Close">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group">
+        <label class="form-label" for="app-company">Company Name</label>
+        <input type="text" class="form-input" id="app-company" placeholder="e.g. Google"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="app-role">Job Title</label>
+        <input type="text" class="form-input" id="app-role" placeholder="e.g. Cloud Engineer"/>
+      </div>
+      <div class="grid-2" style="gap:12px;">
+        <div class="form-group">
+          <label class="form-label" for="app-status">Status</label>
+          <select class="form-input form-select" id="app-status">
+            <option value="applied">Applied</option>
+            <option value="interview">Interview</option>
+            <option value="offer">Offer</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="app-date">Applied Date</label>
+          <input type="date" class="form-input" id="app-date"/>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px;">
+        <button class="btn btn-primary w-full" onclick="addApplication()">Add Application</button>
+        <button class="btn btn-ghost" onclick="Modal.close('add-application-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

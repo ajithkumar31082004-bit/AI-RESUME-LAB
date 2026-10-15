@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account — AI Resume Lab</title>
+  <meta name="description" content="Create your free AI Resume Lab account to start analyzing and improving your resume."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+<div class="bg-animated"></div>
+<div class="grid-overlay"></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚡</div>AI RESUME LAB
+  </a>
+  <div class="nav-actions" style="margin-left:auto;">
+    <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
+    <a href="analyzer.html" class="btn btn-primary btn-sm">Try Free</a>
+  </div>
+</nav>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:calc(var(--nav-height) + 40px) 24px 60px;">
+  <div style="width:100%;max-width:480px;">
+
+    <!-- Brand -->
+    <div class="text-center" style="margin-bottom:32px;">
+      <div style="width:60px;height:60px;border-radius:var(--radius-md);background:var(--gradient-btn-purple);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 16px;box-shadow:0 4px 20px rgba(139,92,246,0.35);">🚀</div>
+      <h1 style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;margin-bottom:6px;">Create Your Account</h1>
+      <p style="font-size:0.875rem;color:var(--text-secondary);">Join 50,000+ professionals. Free forever.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="card card-lg">
+      <!-- Benefits -->
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+        <span class="badge badge-emerald">✓ Free Resume Analysis</span>
+        <span class="badge badge-cyan">✓ ATS Score</span>
+        <span class="badge badge-purple">✓ Interview Prep</span>
+        <span class="badge badge-blue">✓ Job Matching</span>
+      </div>
+
+      <!-- Register Form -->
+      <form id="register-form" novalidate>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" class="form-input" id="reg-name" autocomplete="name"
+                placeholder="Alex Johnson" required/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">📧</span>
+              <input type="email" class="form-input" id="reg-email" autocomplete="email"
+                placeholder="alex@example.com" required/>
+            </div>
+          </div>
+
+          <div class="grid-2" style="gap:12px;">
+            <div class="form-group">
+              <label class="form-label" for="reg-password">Password</label>
+              <div class="input-wrap">
+                <span class="input-icon">🔒</span>
+                <input type="password" class="form-input" id="reg-password" autocomplete="new-password"
+                  placeholder="Min. 8 characters" required minlength="8"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-confirm">Confirm Password</label>
+              <div class="input-wrap">
+                <span class="input-icon">🔑</span>
+                <input type="password" class="form-input" id="reg-confirm" autocomplete="new-password"
+                  placeholder="Repeat password" required/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password Strength -->
+          <div id="password-strength" style="display:none;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:0.72rem;color:var(--text-muted);">Password strength</span>
+              <span id="strength-label" style="font-size:0.72rem;font-weight:600;"></span>
+            </div>
+            <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;">
+              <div id="strength-bar" style="height:100%;border-radius:4px;transition:width 0.3s ease,background 0.3s ease;width:0%;"></div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <input type="checkbox" id="reg-terms" style="width:16px;height:16px;margin-top:3px;accent-color:var(--accent-cyan);cursor:pointer;" required/>
+            <label for="reg-terms" style="font-size:0.825rem;color:var(--text-secondary);cursor:pointer;line-height:1.5;">
+              I agree to the <a href="#" style="color:var(--accent-cyan);">Terms of Service</a> and <a href="#" style="color:var(--accent-cyan);">Privacy Policy</a>
+            </label>
+          </div>
+
+          <div id="reg-error" style="font-size:0.8rem;color:var(--accent-red);min-height:18px;"></div>
+
+          <button type="submit" class="btn btn-purple w-full btn-lg">
+            🚀 Create Account
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <p class="text-center" style="margin-top:24px;font-size:0.875rem;color:var(--text-secondary);">
+      Already have an account? <a href="login.html" style="color:var(--accent-cyan);font-weight:600;">Sign in</a>
+    </p>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Password strength checker
+  const pwInput = document.getElementById('reg-password');
+  const strengthWrap = document.getElementById('password-strength');
+  const strengthBar = document.getElementById('strength-bar');
+  const strengthLabel = document.getElementById('strength-label');
+
+  pwInput?.addEventListener('input', () => {
+    const pw = pwInput.value;
+    if (!pw) { strengthWrap.style.display = 'none'; return; }
+    strengthWrap.style.display = 'block';
+
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (pw.length >= 12) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+    const levels = [
+      { pct: 20, color: '#ef4444', label: 'Very Weak' },
+      { pct: 40, color: '#f59e0b', label: 'Weak' },
+      { pct: 60, color: '#eab308', label: 'Fair' },
+      { pct: 80, color: '#22c55e', label: 'Strong' },
+      { pct: 100, color: '#06b6d4', label: 'Very Strong' },
+    ];
+    const level = levels[Math.min(score - 1, 4)] || levels[0];
+    strengthBar.style.width = level.pct + '%';
+    strengthBar.style.background = level.color;
+    strengthLabel.textContent = level.label;
+    strengthLabel.style.color = level.color;
+  });
+</script>
+</body>
+</html>
