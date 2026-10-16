@@ -1,0 +1,80 @@
+name: AI Resume Lab CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    name: Run Backend Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Unit & Integration Tests
+        run: |
+          cd backend
+          python tests/test_api.py
+
+  deploy-frontend:
+    name: Deploy Frontend to S3 Static Website
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
+      - name: Sync Frontend to Amazon S3
+        run: |
+          aws s3 sync frontend/ s3://${{ secrets.S3_FRONTEND_BUCKET || 'ai-resume-lab-frontend' }} --delete
+
+  deploy-backend:
+    name: Deploy Backend to AWS EC2
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        if: ${{ secrets.EC2_HOST != '' }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME || 'ubuntu' }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/ai-resume-lab
+            git pull origin main
+            cd backend
+            source venv/bin/activate
+            pip install -r requirements.txt
+            sudo systemctl restart ai-resume-lab
+            sudo systemctl reload nginx

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Resume Builder — AI Resume Lab</title>
+  <meta name="description" content="Build an ATS-optimized, high-impact resume with live AI suggestions, Google XYZ bullet rewriter, and instant PDF export."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+  <style>
+    .builder-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 24px;
+    }
+    @media (max-width: 1024px) {
+      .builder-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .editor-section {
+      background: var(--bg-card);
+      border: var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-glass);
+    }
+    .editor-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .editor-section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .live-preview-container {
+      position: sticky;
+      top: 90px;
+      background: #ffffff;
+      color: #1e293b;
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 750px;
+      overflow-y: auto;
+      max-height: calc(100vh - 120px);
+    }
+    .preview-header {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+    .preview-name {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .preview-title {
+      font-size: 1rem;
+      color: #0284c7;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .preview-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 8px;
+    }
+    .preview-section {
+      margin-bottom: 18px;
+    }
+    .preview-section-heading {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #0f172a;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .preview-summary {
+      font-size: 0.84rem;
+      line-height: 1.6;
+      color: #334155;
+    }
+    .preview-exp-item, .preview-edu-item {
+      margin-bottom: 12px;
+    }
+    .preview-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .preview-item-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .preview-item-sub {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #0284c7;
+    }
+    .preview-item-date {
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+    .preview-bullets {
+      margin-top: 6px;
+      padding-left: 18px;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #334155;
+    }
+    .preview-skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .preview-skill-badge {
+      font-size: 0.76rem;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      border: 1px solid #cbd5e1;
+    }
+    .ai-action-btn {
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: #c084fc;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition-fast);
+    }
+    .ai-action-btn:hover {
+      background: rgba(168, 85, 247, 0.25);
+      border-color: #c084fc;
+      transform: translateY(-1px);
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .live-preview-container, .live-preview-container * {
+        visibility: visible;
+      }
+      .live-preview-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-animated"></div>
+<div class="grid-overlay"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚡</div>AI RESUME LAB
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="analyzer.html">Resume Analyzer</a>
+    <a href="builder.html" class="active">Resume Builder</a>
+    <a href="matcher.html">Job Matcher</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-ghost btn-sm nav-login-btn">Login</a>
+    <a href="analyzer.html" class="btn btn-primary btn-sm">Analyze Resume</a>
+    <div class="nav-user nav-user-menu" style="display:none">
+      <div class="nav-avatar" id="nav-avatar">A</div>
+      <span class="nav-user-name">User</span><span>▾</span>
+    </div>
+    <button data-theme-toggle class="btn btn-ghost btn-icon btn-sm">☀️</button>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">🏠 Home</a>
+  <a href="analyzer.html">📄 Resume Analyzer</a>
+  <a href="builder.html" class="active">📝 Resume Builder</a>
+  <a href="matcher.html">🎯 Job Matcher</a>
+  <a href="interview.html">🎤 Interview Prep</a>
+  <a href="dashboard.html">📊 Dashboard</a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-content">
+      <div>
+        <div class="section-eyebrow">✨ AI Resume Architect</div>
+        <h1 class="page-title"><span class="gradient-text">Interactive Resume Builder</span></h1>
+        <p class="page-subtitle">Craft a high-converting ATS resume with live preview and real-time AI bullet enhancements.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="loadSampleResume()" class="btn btn-ghost btn-sm">📄 Load Demo Profile</button>
+        <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ Export PDF / Print</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN BUILDER WORKSPACE -->
+<main class="container" style="padding-bottom: 80px;">
+  <div class="builder-layout">
+
+    <!-- LEFT COLUMN: FORM EDITORS -->
+    <div class="builder-editor">
+
+      <!-- 1. PERSONAL DETAILS -->
+      <div class="editor-section">
+        <div class="editor-section-header">
+          <div class="editor-section-title">👤 Contact & Personal Details</div>
+        </div>
+        <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="form-group" style="grid-column: span 2;">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="inp-name" class="form-control" placeholder="Jane Doe" value="Jane Doe" oninput="updatePreview()"/>
+          </div>
+          <div class="form-group" style="grid-column: span 2;">
+            <label class="form-label">Professional Title / Headline</label>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="inp-title" class="form-control" placeholder="Senior Cloud & DevOps Engineer" value="Senior Cloud & DevOps Engineer" oninput="updatePreview()"/>
+              <button onclick="generateAIHeadline()" class="ai-action-btn" title="Generate with AI">✨ AI</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="inp-email" class="form-control" placeholder="jane.doe@example.com" value="jane.doe@example.com" oninput="updatePreview()"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" id="inp-phone" class="form-control" placeholder="+1 (555) 234-5678" value="+1 (555) 234-5678" oninput="updatePreview()"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location (City, State / Country)</label>
+            <input type="text" id="inp-location" class="form-control" placeholder="Seattle, WA" value="Seattle, WA" oninput="updatePreview()"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">LinkedIn / Portfolio URL</label>
+            <input type="text" id="inp-link" class="form-control" placeholder="linkedin.com/in/janedoe" value="linkedin.com/in/janedoe" oninput="updatePreview()"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. PROFESSIONAL SUMMARY -->
+      <div class="editor-section">
+        <div class="editor-section-header">
+          <div class="editor-section-title">📝 Executive Summary</div>
+          <button onclick="enhanceSummaryWithAI()" class="ai-action-btn" id="btn-ai-summary">⚡ AI Enhance Summary</button>
+        </div>
+        <div class="form-group">
+          <textarea id="inp-summary" class="form-control" rows="4" style="resize:vertical;" oninput="updatePreview()">Results-driven Cloud & DevOps Engineer with 5+ years of experience architecting highly resilient AWS infrastructure, automating CI/CD pipelines, and driving zero-downtime microservices deployments. Spearheaded cost-optimization initiatives slashing annual infrastructure expenditures by 28%.</textarea>
+        </div>
+      </div>
+
+      <!-- 3. WORK EXPERIENCE -->
+      <div class="editor-section">
+        <div class="editor-section-header">
+          <div class="editor-section-title">💼 Work Experience</div>
+          <button onclick="enhanceExperienceWithAI()" class="ai-action-btn" id="btn-ai-exp">🎯 AI XYZ Formula</button>
+        </div>
+        <div id="experience-list">
+          <!-- Experience Item 1 -->
+          <div class="card card-sm" style="margin-bottom:12px;background:rgba(255,255,255,0.02);padding:14px;border-radius:var(--radius-md);">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+              <input type="text" class="form-control exp-role" placeholder="Role Title" value="Senior Cloud Infrastructure Engineer" oninput="updatePreview()"/>
+              <input type="text" class="form-control exp-company" placeholder="Company Name" value="CloudScale Technologies" oninput="updatePreview()"/>
+              <input type="text" class="form-control exp-period" placeholder="Dates (e.g. 2022 - Present)" value="2022 – Present" oninput="updatePreview()"/>
+              <input type="text" class="form-control exp-loc" placeholder="Location" value="Seattle, WA" oninput="updatePreview()"/>
+            </div>
+            <label class="form-label" style="font-size:0.75rem;">Accomplishments (One bullet per line)</label>
+            <textarea class="form-control exp-bullets" rows="3" oninput="updatePreview()">• Architected multi-region AWS EKS clusters hosting 40+ microservices, boosting availability to 99.99%.
+• Automated Terraform IaC pipelines with GitHub Actions, slashing release cycle time by 45%.
+• Implemented Prometheus & Grafana alerting, reducing MTTR for critical production incidents by 35%.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CORE SKILLS -->
+      <div class="editor-section">
+        <div class="editor-section-header">
+          <div class="editor-section-title">🛠️ Core Competencies & Skills</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Technical Skills (Comma separated)</label>
+          <input type="text" id="inp-skills" class="form-control" value="AWS, Docker, Kubernetes, Terraform, Python, CI/CD, Linux, Bash, Prometheus, Grafana, PostgreSQL, REST APIs, Git" oninput="updatePreview()"/>
+        </div>
+      </div>
+
+      <!-- 5. EDUCATION & CERTIFICATIONS -->
+      <div class="editor-section">
+        <div class="editor-section-header">
+          <div class="editor-section-title">🎓 Education & Certifications</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+          <input type="text" id="inp-degree" class="form-control" placeholder="Degree" value="B.S. in Computer Science" oninput="updatePreview()"/>
+          <input type="text" id="inp-school" class="form-control" placeholder="University" value="University of Washington" oninput="updatePreview()"/>
+          <input type="text" id="inp-edu-year" class="form-control" placeholder="Year" value="2020" oninput="updatePreview()"/>
+          <input type="text" id="inp-certs" class="form-control" placeholder="Certifications" value="AWS Solutions Architect Associate, CKA (Certified Kubernetes Administrator)" oninput="updatePreview()"/>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: LIVE RESUME PREVIEW -->
+    <div class="builder-preview-wrapper">
+      <div class="live-preview-container" id="resume-sheet">
+        <!-- HEADER -->
+        <div class="preview-header">
+          <div class="preview-name" id="prev-name">Jane Doe</div>
+          <div class="preview-title" id="prev-title">Senior Cloud & DevOps Engineer</div>
+          <div class="preview-contact" id="prev-contact">
+            <span id="prev-email">jane.doe@example.com</span> •
+            <span id="prev-phone">+1 (555) 234-5678</span> •
+            <span id="prev-location">Seattle, WA</span> •
+            <span id="prev-link">linkedin.com/in/janedoe</span>
+          </div>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="preview-section">
+          <div class="preview-section-heading">Professional Summary</div>
+          <div class="preview-summary" id="prev-summary">
+            Results-driven Cloud & DevOps Engineer with 5+ years of experience architecting highly resilient AWS infrastructure, automating CI/CD pipelines, and driving zero-downtime microservices deployments.
+          </div>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <div class="preview-section">
+          <div class="preview-section-heading">Professional Experience</div>
+          <div id="prev-experience">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- SKILLS -->
+        <div class="preview-section">
+          <div class="preview-section-heading">Technical Competencies</div>
+          <div class="preview-skills-grid" id="prev-skills">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- EDUCATION -->
+        <div class="preview-section">
+          <div class="preview-section-heading">Education & Certifications</div>
+          <div class="preview-edu-item">
+            <div class="preview-item-row">
+              <span class="preview-item-title" id="prev-degree">B.S. in Computer Science</span>
+              <span class="preview-item-date" id="prev-edu-year">2020</span>
+            </div>
+            <div class="preview-item-sub" id="prev-school">University of Washington</div>
+            <div style="font-size:0.8rem;color:#475569;margin-top:4px;" id="prev-certs">
+              Certifications: AWS Solutions Architect Associate, CKA
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 AI Resume Lab. All rights reserved.</div>
+      <a href="index.html" style="font-size:0.8rem;color:var(--text-muted);">← Back to Home</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/builder.js"></script>
+</body>
+</html>
