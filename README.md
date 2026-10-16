@@ -174,14 +174,14 @@ npx serve .
 ## ☁️ Production Deployment Guide
 
 ### A. Frontend Hosting on Amazon S3 Static Website Hosting
-1. Create an S3 Bucket: `ai-resume-lab-frontend`.
+1. Use your S3 Bucket: `s3-ajith-3108` (`arn:aws:s3:::s3-ajith-3108`).
 2. Enable **Static Website Hosting** under Bucket Properties, set `index.html` as the index and error document.
-3. Configure bucket policy for public read access.
+3. Configure bucket policy for public read access using [s3_website_policy.json](file:///c:/Users/ajith/Downloads/AI%20RESUME%20LAB/deploy/s3_website_policy.json).
 4. Run the deployment script:
    ```bash
-   bash deploy/deploy_s3.sh ai-resume-lab-frontend us-east-1
+   bash deploy/deploy_s3.sh s3-ajith-3108 us-east-1
    ```
-5. Your frontend is live at: `http://ai-resume-lab-frontend.s3-website-us-east-1.amazonaws.com`.
+5. Your frontend is live at: `http://s3-ajith-3108.s3-website-us-east-1.amazonaws.com`.
 
 ### B. Backend Hosting on AWS EC2 (Ubuntu 22.04 / 24.04 LTS)
 1. Launch an EC2 Ubuntu instance (e.g., `t3.small` or `t3.medium`).

@@ -11,8 +11,8 @@
         "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::ai-resume-lab-storage",
-        "arn:aws:s3:::ai-resume-lab-storage/*"
+        "arn:aws:s3:::s3-ajith-3108",
+        "arn:aws:s3:::s3-ajith-3108/*"
       ]
     },
     {

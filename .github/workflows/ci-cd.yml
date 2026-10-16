@@ -51,7 +51,7 @@ jobs:
 
       - name: Sync Frontend to Amazon S3
         run: |
-          aws s3 sync frontend/ s3://${{ secrets.S3_FRONTEND_BUCKET || 'ai-resume-lab-frontend' }} --delete
+          aws s3 sync frontend/ s3://${{ secrets.S3_FRONTEND_BUCKET || 's3-ajith-3108' }} --delete
 
   deploy-backend:
     name: Deploy Backend to AWS EC2

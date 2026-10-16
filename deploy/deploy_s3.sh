@@ -6,8 +6,8 @@
 
 set -e
 
-# Configuration (Replace with your actual S3 bucket name)
-BUCKET_NAME="${1:-ai-resume-lab-static-frontend}"
+# Configuration (Default bucket: s3-ajith-3108)
+BUCKET_NAME="${1:-s3-ajith-3108}"
 REGION="${2:-us-east-1}"
 FRONTEND_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../frontend" && pwd)"
 

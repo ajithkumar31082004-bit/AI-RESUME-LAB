@@ -6,7 +6,7 @@
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::ai-resume-lab-frontend/*"
+      "Resource": "arn:aws:s3:::s3-ajith-3108/*"
     }
   ]
 }
