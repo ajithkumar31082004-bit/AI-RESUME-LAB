@@ -16,8 +16,12 @@ sudo apt update && sudo apt upgrade -y
 echo "📦 Installing Python, Nginx, and dependencies..."
 sudo apt install -y python3 python3-pip python3-venv nginx git curl ufw
 
-# 3. Create deployment directories
+# 3. Detect and setup deployment directories
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_DIR="/home/ubuntu/ai-resume-lab"
+if [ "$SCRIPT_DIR" != "$APP_DIR" ]; then
+    sudo ln -sfn "$SCRIPT_DIR" "$APP_DIR"
+fi
 mkdir -p "$APP_DIR"
 sudo mkdir -p /var/log/gunicorn
 sudo chown -R ubuntu:www-data /var/log/gunicorn
